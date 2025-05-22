@@ -1,0 +1,217 @@
+\documentclass[11pt, letterpaper]{article}
+
+% Packages:
+\usepackage[
+    ignoreheadfoot, % set margins without considering header and footer
+    top=2 cm, % separation between body and page edge from the top
+    bottom=2 cm, % separation between body and page edge from the bottom
+    left=2 cm, % separation between body and page edge from the left
+    right=2 cm, % separation between body and page edge from the right
+    footskip=1.0 cm, % separation between body and footer
+    % showframe % for debugging 
+]{geometry} % for adjusting page geometry
+\usepackage{titlesec} % for customizing section titles
+\usepackage{tabularx} % for making tables with fixed width columns
+\usepackage{array} % tabularx requires this
+\usepackage[dvipsnames]{xcolor} % for coloring text
+\definecolor{primaryColor}{RGB}{0, 79, 144} % define primary color
+\usepackage{enumitem} % for customizing lists
+\usepackage{fontawesome5} % for using icons
+\usepackage{amsmath} % for math
+\usepackage[
+    pdftitle={Professional Resume},
+    pdfauthor={Your Name},
+    pdfcreator={LaTeX},
+    colorlinks=true,
+    urlcolor=primaryColor
+]{hyperref} % for links, metadata and bookmarks
+\usepackage[pscoord]{eso-pic} % for floating text on the page
+\usepackage{calc} % for calculating lengths
+\usepackage{bookmark} % for bookmarks
+\usepackage{lastpage} % for getting the total number of pages
+\usepackage{changepage} % for one column entries (adjustwidth environment)
+\usepackage{paracol} % for two and three column entries
+\usepackage{ifthen} % for conditional statements
+\usepackage{needspace} % for avoiding page break right after the section title
+\usepackage{iftex} % check if engine is pdflatex, xetex or luatex
+\usepackage{ebgaramond}
+% Ensure that generated pdf is machine readable/ATS parsable:
+\ifPDFTeX
+    \input{glyphtounicode}
+    \pdfgentounicode=1
+    % \usepackage[T1]{fontenc} % this breaks sb2nov
+    \usepackage[utf8]{inputenc}
+    \usepackage{lmodern}
+\fi
+% Some settings:
+\AtBeginEnvironment{adjustwidth}{\partopsep0pt} % remove space before adjustwidth environment
+\pagestyle{empty} % no header or footer
+\setcounter{secnumdepth}{0} % no section numbering
+\setlength{\parindent}{0pt} % no indentation
+\setlength{\topskip}{0pt} % no top skip
+\setlength{\columnsep}{0cm} % set column separation
+\makeatletter
+\let\ps@customFooterStyle\ps@plain % Copy the plain style to customFooterStyle
+\patchcmd{\ps@customFooterStyle}{\thepage}{
+    \color{gray}\textit{\small \jobname{} - Page \thepage{} of \pageref*{LastPage}}
+}{}{} % replace number by desired string
+\makeatother
+\pagestyle{customFooterStyle}
+\titleformat{\section}{\needspace{4\baselineskip}\bfseries\large}{}{0pt}{}[\vspace{1pt}\titlerule]
+\titlespacing{\section}{
+    -1pt % left space
+}{0.3 cm % top space
+}{0.2 cm} % bottom space
+\newenvironment{highlights}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=0.4 cm + 10pt
+    ]
+}{
+    \end{itemize}
+} % environment for bullet highlights
+\newenvironment{highlightsforbulletentries}{
+    \begin{itemize}[
+        topsep=0.10 cm,
+        parsep=0.10 cm,
+        partopsep=0pt,
+        itemsep=0pt,
+        leftmargin=10pt
+    ]
+}{
+    \end{itemize}
+} % environment for highlights for bullet entries
+\newenvironment{onecolentry}{
+    \begin{adjustwidth}{0.2 cm}{0.2 cm}
+}{
+    \end{adjustwidth}
+} % environment for one column entries
+\newenvironment{twocolentry}[2][]{
+    \onecolentry
+    \def\secondColumn{#2}
+    \setcolumnwidth{\fill, 4.5 cm}
+    \begin{paracol}{2}
+}{
+    \switchcolumn \raggedleft \secondColumn
+    \end{paracol}
+    \endonecolentry
+} % environment for two column entries
+\newenvironment{header}{
+    \setlength{\topsep}{0pt}\par\kern\topsep\centering\linespread{1.5}
+}{
+    \par\kern\topsep
+} % environment for the header
+% save the original href command:
+\let\hrefWithoutArrow\href
+% redefine for external links:
+\renewcommand{\href}[2]{\hrefWithoutArrow{#1}{#2 \raisebox{.15ex}{\footnotesize \faExternalLink*}}}
+\begin{document}
+    \begin{header}
+        \textbf{\fontsize{24 pt}{24 pt}\selectfont Your Name}
+
+        \normalsize
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{mailto:your.email@example.com}{\color{black}{\footnotesize\faEnvelope[regular]}\hspace*{0.13cm}your.email@example.com}}%
+        \kern 0.25 cm%
+        \mbox{\hrefWithoutArrow{tel:+1-555-555-5555}{\color{black}{\footnotesize\faPhone*}\hspace*{0.13cm}+1 (555) 555-5555}}%
+        % Add additional contact methods as needed:
+        % \kern 0.25 cm%
+        % \mbox{\hrefWithoutArrow{https://linkedin.com/in/yourprofile}{\color{black}{\footnotesize\faLinkedin}\hspace*{0.13cm}LinkedIn}}%
+        % \kern 0.25 cm%
+        % \mbox{\hrefWithoutArrow{https://github.com/yourusername}{\color{black}{\footnotesize\faGithub}\hspace*{0.13cm}GitHub}}%
+    \end{header}
+    \vspace{0.5cm}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % EXPERIENCE
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \section{Experience}
+    \begin{twocolentry}{
+        Jan 20XX -- Present \\
+        Location (Remote)
+    }
+        \textbf{Senior Position Title}\\[0.2cm]
+        \textit{Company Name}
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Led development of [specific project/feature], resulting in [quantifiable outcome].
+            \item Implemented [technology or process], improving [specific metric] by [quantifiable result].
+            \item Collaborated with cross-functional teams to deliver [project or outcome].
+            \item Established [process or system] that increased [efficiency/productivity/other metric].
+            \item Mentored junior team members, leading to [positive outcome].
+        \end{highlights}
+    \end{onecolentry}
+    \vspace{0.3 cm}
+    % Example Job 2
+    \begin{twocolentry}{
+        Mar 20XX -- Dec 20XX \\
+        Location
+    }
+        \textbf{Position Title}\\[0.2cm]
+        \textit{Company Name}
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Developed [specific feature/project] using [relevant technologies].
+            \item Created and maintained [system/application] that [specific accomplishment].
+            \item Reduced [problem metric] by [percentage] through implementation of [solution].
+            \item Collaborated with [relevant teams] to improve [specific process/outcome].
+            \item Participated in [relevant activity] that resulted in [positive outcome].
+        \end{highlights}
+    \end{onecolentry}
+    \vspace{0.3 cm}
+    % Example Job 3 - Earlier Position
+    \begin{twocolentry}{
+        Jun 20XX -- Feb 20XX \\
+        Location
+    }
+        \textbf{Earlier Position Title}\\[0.2cm]
+        \textit{Previous Company Name}
+    \end{twocolentry}
+    \vspace{0.10 cm}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item Managed [specific responsibility] which improved [specific metric].
+            \item Built [specific tool or feature] that [specific achievement].
+            \item Led [specific initiative] resulting in [quantifiable outcome].
+            \item Implemented [specific technology] to solve [specific problem].
+            \item Collaborated with [specific team] to deliver [specific outcome].
+        \end{highlights}
+    \end{onecolentry}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % SKILLS
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \section{Skills}
+    \begin{onecolentry}
+        \begin{highlights}
+            \item \textbf{Programming Languages:} [Languages]
+            \item \textbf{Frameworks/Technologies:} [Frameworks, Libraries, Technologies]
+            \item \textbf{Databases:} [Database Systems]
+            \item \textbf{Cloud:} [Cloud Services and Technologies]
+            \item \textbf{Infrastructure/Observability:} [Infrastructure and Monitoring Tools]
+            \item \textbf{CI/CD:} [CI/CD Tools and Platforms]
+            \item \textbf{Methodologies:} [Agile, Scrum, etc.]
+            \item \textbf{Testing:} [Testing Frameworks and Tools]
+            \item \textbf{Soft Skills:} [Leadership, Communication, etc.]
+        \end{highlights}
+    \end{onecolentry}
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    % EDUCATION
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    \section{Education}
+    \begin{twocolentry}{20XX}
+        \textbf{Degree in Field of Study}\\[0.2cm]
+        University or Institution Name
+    \end{twocolentry}
+    % Uncomment and modify for additional education
+    % \vspace{0.3 cm}
+    % \begin{twocolentry}{20XX}
+    %     \textbf{Another Degree or Certification}\\[0.2cm]
+    %     Institution Name
+    % \end{twocolentry}
+\end{document}
